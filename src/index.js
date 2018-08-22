@@ -1,27 +1,36 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import { BrowserRouter } from 'react-router-dom'
+import { AppContainer } from 'react-hot-loader'
 
-import App from './pages/App'
+import history from './utils/history'
+import Root from './Root'
 
-if (module.hot) {
-  module.hot.accept(() => {
-    render(App);
-  })
-}
+const mountNode = document.getElementById("root")
 
-render(App);
+const MainAPP = () => (
+  <BrowserRouter history={history}>
+    <Root />
+  </BrowserRouter>
+)
 
-function render(Component, onRender) {
-  if (!onRender) { onRender = function() {}; }
-
-  if (window) {
+if (process.env.NODE_ENV === "development") {
+  const render = Component => {
     ReactDom.render(
       <AppContainer>
-            <Component/>
+        <Component />
       </AppContainer>,
-      document.getElementById('root'),
-      onRender
-    );
+      mountNode,
+    )
   }
+
+  render(MainAPP)
+  // webpack Hot Module Replacement API
+  if (module.hot) {
+    module.hot.accept(() => {
+      render(MainAPP)
+    })
+  } 
+} else {
+  ReactDom.render(<MainAPP />, mountNode)
 }

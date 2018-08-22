@@ -18,7 +18,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -35,6 +35,13 @@ module.exports = {
         },
       }
     ],
+  },
+  resolve: {
+    alias: {
+      Styles: path.resolve(__dirname, "../src/static/css"),
+    },
+    modules: [path.resolve(__dirname, "../"), "node_modules"],
+    extensions: [".js", ".jsx", ".json"],
   },
   plugins: [
     new HtmlWebpackPlugin({
